@@ -1,19 +1,20 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 import BaseLayout from '@/components/layouts/BaseLayout.vue'
-import HomeView from '@/views/HomeView.vue'
-import ArticleView from '@/views/ArticleView.vue'
-import TestView from '@/views/TestView.vue'
-import NotFoundView from '@/views/NotFoundView.vue'
+import Home from '@/views/Home.vue'
+import Article from '@/views/Article.vue'
+import ApiTest from '@/views/ApiTest.vue'
+import NotFound from '@/views/NotFound.vue'
+import Playground from '@/views/Playground.vue'
 
 const routes = [
     {
-        path: '/:lang?/home',
+        path: '/:lang(zh|en)?/home',
         name: 'home',
-        component: HomeView,
+        component: Home,
     },
     {
-        path: '/:lang?',
+        path: '/:lang(zh|en)?',
         component: BaseLayout,
         children: [
             {
@@ -22,21 +23,27 @@ const routes = [
                     `/${to.params.lang ? to.params.lang + '/' : ''}home`,
             },
             {
-                path: 'article/:identifier',
+                path: 'article/:identifier?',
                 name: 'article',
-                component: ArticleView,
+                component: Article,
                 props: true
             },
+            {
+                path: 'test',
+                component: ApiTest,
+            },
+            {
+                path: 'playground',
+                name: 'playground',
+                component: Playground,
+            }
         ]
     },
-    {
-        path: '/test',
-        component: TestView,
-    },
+
     {
         path: '/:pathMatch(.*)*',
         name: 'not-found',
-        component: NotFoundView,
+        component: NotFound,
     }
 ]
 

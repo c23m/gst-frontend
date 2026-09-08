@@ -1,4 +1,4 @@
-import 'github-markdown-css/github-markdown.css'
+import '@/assets/styles/markdown.css'
 
 import { createApp } from 'vue'
 import router from './router'
@@ -14,5 +14,3 @@ async function init() {
 }
 
 init()
-
-

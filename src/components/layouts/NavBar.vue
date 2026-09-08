@@ -30,11 +30,21 @@ onMounted(() => {
     <nav>
         <a class="logo" :style="{ maskImage: `url(${logo})` }" href="/"></a>
         <ul v-if="isDesktop">
-            <li><a href="/">首页</a></li>
-            <li><a href="/article">文档</a></li>
-            <li><a href="/test">测试</a></li>
-            <li><a href="">文本</a></li>
-            <li><a href="">文本</a></li>
+            <li>
+                <Link url="/home">首页</Link>
+            </li>
+            <li>
+                <Link url="/article">文档</Link>
+            </li>
+            <li>
+                <Link url="/test">api测试</Link>
+            </li>
+            <li>
+                <Link url="/playground">调试</Link>
+            </li>
+            <li>
+                <Link url="">文本</Link>
+            </li>
         </ul>
         <div class="buttons">
             <Icon :name="theme" @click="toggleTheme" />
@@ -43,6 +53,7 @@ onMounted(() => {
                 <Icon name="github" />
             </Link>
             <Icon v-if="!isDesktop" name="menu" @click="menuOpen = !menuOpen" />
+
         </div>
     </nav>
 </template>
