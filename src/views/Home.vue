@@ -1,13 +1,19 @@
 <script setup>
-import { ref } from 'vue'
-import { useMediaQuery } from '@vueuse/core'
+import { computed, ref } from 'vue'
+import { get, useMediaQuery } from '@vueuse/core'
 import '@/assets/styles/base.css'
-import NavBar from '@/components/layouts/NavBar.vue'
+import NavBar from '@/components/layouts/nav/NavBar.vue'
 import Footer from '@/components/layouts/Footer.vue'
 import BaseLayout from '@/components/layouts/BaseLayout.vue'
 import Aside from '@/components/common/Aside.vue'
 import RecommendCard from '@/components/misc/RecommendCard.vue'
 import Button from '@/components/common/Button.vue'
+
+import { useRequest } from 'vue-request'
+import { getArticles } from '@/api/article'
+
+const { data: articles, loading, error, refresh } = useRequest(() => getArticles())
+
 const isDesktop = useMediaQuery('(min-width: 768px)')
 
 const pictIndex = ref(0)
@@ -15,18 +21,13 @@ const colors = ["linear-gradient(to right bottom, #33e, #3ee)",
     "linear-gradient(to right bottom, #e33, #e3e)",
     "linear-gradient(to right bottom, #3e3, #ee3)"]
 
-const articles = [
-    {
-        slug: "dog",
-        title: "Dog",
-        subtitle: "Development of Grassit"
-    },
-    {
-        slug: "deswaq",
-        title: "DESWAQ",
-        subtitle: "Disappeared Entrance: Start Without Any Quests"
-    }
-]
+const items = computed(() => {
+    (articles.value || []).map(item => ({
+        url: "/article/" + item.slug,
+        title: item.title,
+        subtitle: item.author.nickname
+    }))
+})
 
 const recommendations = [
     {
@@ -66,7 +67,7 @@ const recommendations = [
         </header>
         <NavBar />
         <main class="main">
-            <Aside title="文章列表" :items="articles" class="articles" id="articles" />
+            <Aside :items class="articles" id="articles"> 文章列表 </Aside>
             <section class="products">
                 <h2>推荐列表</h2>
                 <ul>

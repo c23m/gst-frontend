@@ -19,7 +19,7 @@ const images = { sunny, dessert, dark }
             </p>
         </div>
         <div class="image-div" :style='{ backgroundImage: `url("${images[recommend.image]}")` }'>
-            <Link :href="recommend.link">
+            <Link :url="recommend.link">
                 &rightarrow;
             </Link>
         </div>

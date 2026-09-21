@@ -3,7 +3,7 @@ import { ref, computed, onMounted, watch } from 'vue'
 import { marked } from 'marked'
 import BaseLayout from '@/components/layouts/BaseLayout.vue';
 import { useAsync } from '@/composables/useAysnc';
-import { get } from '@/utils';
+// import { get } from '@/utils/request';
 import Aside from '@/components/common/Aside.vue';
 
 const { identifier } = defineProps({
@@ -13,44 +13,44 @@ const { identifier } = defineProps({
     }
 })
 
-const article = ref({
-    title: '',
-    content: '',
-    slug: '',
-    uuid: '',
-    author: {
-        username: '',
-        nickname: ''
-    },
-    createdAt: ' ',
-    updatedAt: ' ',
-})
+// const article = ref({
+//     title: '',
+//     content: '',
+//     slug: '',
+//     uuid: '',
+//     author: {
+//         username: '',
+//         nickname: ''
+//     },
+//     createdAt: ' ',
+//     updatedAt: ' ',
+// })
 
-const content = ref('')
+// const content = ref('')
 
-const { data, loading, error, execute } = useAsync(async (url) => {
+// const { data, loading, error, execute } = useAsync(async (url) => {
 
-    const response = await get(url)
-    return response
-}
-)
+//     const response = await get(url)
+//     return response
+// }
+// )
 
-watch(data, () => {
-    article.value = data.value
-    if (article.value.content) {
-        content.value = marked.parse(article.value.content)
-    }
-})
+// watch(data, () => {
+//     article.value = data.value
+//     if (article.value.content) {
+//         content.value = marked.parse(article.value.content)
+//     }
+// })
 
-onMounted(() => {
-    execute(`/api/article/${identifier}`)
-}
-)
+// onMounted(() => {
+//     execute(`/api/article/${identifier}`)
+// }
+// )
 
 </script>
 
 <template>
-    <div v-if="loading" class="loading">加载中...</div>
+    <!-- <div v-if="loading" class="loading">加载中...</div>
     <div v-else-if="error" class="error">{{ error }}</div>
     <div v-else class="container">
         <Aside :items="[]" class="menu"> 目录 </Aside>
@@ -63,7 +63,7 @@ onMounted(() => {
             <article class="markdown-body" v-html="content"></article>
         </div>
 
-    </div>
+    </div> -->
 </template>
 
 <style scoped>

@@ -1,68 +1,68 @@
 <script setup>
 
-import { onMounted, ref, reactive, watch } from 'vue'
-import { useAsync } from '@/composables/useAysnc.js';
-import { useCache } from '@/composables/useCache.js';
-import { request } from '@/utils/request.js';
-import { Button, Radio, TextInput, TextArea } from '@/components/common';
+// import { onMounted, ref, reactive, watch } from 'vue'
+// import { useRequest } from 'vue-request';
+// import { useCache } from '@/composables/useCache.js';
+// import { request } from '@/utils/request.js';
+// import { Button, Radio, TextInput, Textarea } from '@/components/common';
 
-const form = reactive({
-    method: 'GET',
-    target: '/api/',
-    body: ''
-})
+// const form = reactive({
+//     method: 'GET',
+//     target: '/',
+//     body: ''
+// })
 
-const urlCache = useCache('url-cache', true)
+// const urlCache = useCache('url-cache', true)
 
-const bodyCache = useCache('body-cache', true)
+// const bodyCache = useCache('body-cache', true)
 
-const { data, loading, error, execute } = useAsync(async (form) => {
-    urlCache.insert(form.target)
-    bodyCache.insert(form.body)
-    const response = await request(form.target, {
-        method: form.method,
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: form.method === "GET" ? null : JSON.stringify(form.body)
-    })
-    return response
-}
-)
+// const { data, loading, error, execute } = useRequest(async (form) => {
+//     urlCache.insert(form.target)
+//     bodyCache.insert(form.body)
+//     const response = await request(form.target, {
+//         method: form.method,
+//         headers: {
+//             "Content-Type": "application/json"
+//         },
+//         body: form.method === "GET" ? null : JSON.stringify(form.body)
+//     })
+//     return response
+// }
+// )
 
-watch(() => urlCache.current.value, (newVal) => {
-    form.target = newVal
-})
+// watch(() => urlCache.current.value, (newVal) => {
+//     form.target = newVal
+// })
 
-watch(() => bodyCache.current.value, (newVal) => {
-    form.body = newVal
-})
+// watch(() => bodyCache.current.value, (newVal) => {
+//     form.body = newVal
+// })
 
 
-onMounted(() => {
-    if (urlCache.items.value) {
-        form.target = urlCache.current.value
-    }
-    form.target = form.target ?? '/api/'
-    if (bodyCache.items.value) {
-        form.body = bodyCache.current.value
-    }
-    refresh()
-})
+// onMounted(() => {
+//     if (urlCache.items.value) {
+//         form.target = urlCache.current.value
+//     }
+//     form.target = form.target ?? ''
+//     if (bodyCache.items.value) {
+//         form.body = bodyCache.current.value
+//     }
+//     refresh()
+// })
 
-const refresh = () => {
-    execute(form)
-}
+// const refresh = () => {
+//     execute(form)
+// }
 
-const clear = () => {
-    urlCache.clear()
-    bodyCache.clear()
-}
+// const clear = () => {
+//     urlCache.clear()
+//     bodyCache.clear()
+// }
 
 </script>
 
 <template>
-    <div class="container">
+    <!-- <div class="container">
         <form @submit.prevent="refresh">
             <h2>测试表单</h2>
             <fieldset>
@@ -86,7 +86,7 @@ const clear = () => {
                         &gt;
                     </Button>
                 </legend>
-                <TextInput class="target" v-model="form.target" placeholder="/api/..." @keyup.enter="refresh" />
+                <TextInput class="target" v-model="form.target" placeholder="/test" @keyup.enter="refresh" />
             </fieldset>
             <fieldset>
                 <legend>
@@ -98,7 +98,7 @@ const clear = () => {
                         &gt;
                     </Button>
                 </legend>
-                <code><pre><TextArea class="request-body" v-model="form.body" :disabled="form.method === 'GET'" /></pre></code>
+                <code><pre><Textarea class="request-body" v-model="form.body" :disabled="form.method === 'GET'" /></pre></code>
             </fieldset>
             <fieldset class="buttons">
                 <Button type="submit"> 请求 </Button>
@@ -116,7 +116,7 @@ const clear = () => {
             </p>
             <code v-else><pre>{{ JSON.stringify(data, null, 2) }}</pre></code>
         </div>
-    </div>
+    </div> -->
 </template>
 
 <style scoped>

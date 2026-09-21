@@ -1,28 +1,18 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useMediaQuery } from '@vueuse/core'
+
+import { ref, onMounted, computed } from 'vue'
+import { useDark, useToggle, useMediaQuery } from '@vueuse/core'
 import Icon from '@/components/common/Icon.vue'
-import Link from '@/components/common/Link.vue'
+import { Link } from '@/components/common'
 import logo from '@/assets/images/Grassit.png'
-// import Button from '@/components/common/Button.vue'
-const theme = ref('')
 const menuOpen = ref(false)
 
 const isDesktop = useMediaQuery('(min-width: 768px)')
 
-function applyTheme() {
-    localStorage.setItem('theme', theme.value);
-    document.documentElement.setAttribute('data-theme', theme.value)
-}
-function toggleTheme() {
-    theme.value = theme.value === 'light' ? 'dark' : 'light';
-    applyTheme();
-}
+const isDark = useDark()
+const toggleDark = useToggle(isDark)
 
-onMounted(() => {
-    theme.value = localStorage.getItem('theme') ?? 'dark';
-    applyTheme();
-})
+const theme = computed(() => isDark.value ? "dark" : "light")
 
 </script>
 
@@ -47,7 +37,7 @@ onMounted(() => {
             </li>
         </ul>
         <div class="buttons">
-            <Icon :name="theme" @click="toggleTheme" />
+            <Icon :name="theme" @click="toggleDark" />
 
             <Link url="https://github.com/c23m">
                 <Icon name="github" />
@@ -64,12 +54,12 @@ nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    box-shadow: 0 0 12px var(--shadow);
+    box-shadow: 0 0 0.75rem var(--shadow);
     backdrop-filter: blur(4px);
     position: sticky;
     top: 0;
-    height: 50px;
-    padding: 0 10px;
+    height: var(--nav-height);
+    padding: 0 0.5rem;
     background: var(--bg-primary);
     color: var(--text-strong);
     z-index: 20;
@@ -84,7 +74,7 @@ ul {
     white-space: nowrap;
     font-size: 1em;
     flex-flow: row;
-    gap: 20px;
+    gap: 1.5rem;
     margin: 0 auto;
 }
 
@@ -101,7 +91,7 @@ ul a:hover {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1em;
+    gap: 1rem;
 }
 
 /* 图标 */
@@ -127,5 +117,12 @@ ul a:hover {
     nav {
         display: none;
     }
+}
+</style>
+
+<style>
+html {
+    --nav-height: 3rem;
+    scroll-padding-top: calc(var(--nav-height) + 0.5rem);
 }
 </style>

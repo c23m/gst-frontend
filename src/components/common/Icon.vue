@@ -1,11 +1,20 @@
 <script setup>
-import { computed } from 'vue';
-import github from '@/assets/icons/github.svg'
-import menu from '@/assets/icons/menu.svg'
-import light from '@/assets/icons/light.svg'
-import dark from '@/assets/icons/dark.svg'
+import IconGithub from '~icons/mdi/github'
+import IconLight from '~icons/material-symbols/light-mode-outline-rounded'
+import IconDark from '~icons/material-symbols/dark-mode-outline-rounded'
+import IconMenu from '~icons/material-symbols/menu-rounded'
+import IconTranslate from '~icons/material-symbols/translate-rounded'
+import IconExternal from '~icons/material-symbols/open-in-new-rounded'
 
-const icons = { github, menu, light, dark }
+const icons = {
+    github: IconGithub,
+    light: IconLight,
+    dark: IconDark,
+    menu: IconMenu,
+    translate: IconTranslate,
+    external: IconExternal
+}
+
 const { name, title } = defineProps({
     name: {
         type: String,
@@ -17,7 +26,7 @@ const { name, title } = defineProps({
 
 <template>
     <span class="wrapper" :title>
-        <span :style='{ maskImage: `url("${icons[name]}")` }' class="icon"></span>
+        <component :is="icons[name]" v-if="icons[name]" class="icon" />
     </span>
 </template>
 
@@ -25,7 +34,6 @@ const { name, title } = defineProps({
 .wrapper {
     cursor: pointer;
     display: inline-flex;
-    justify-items: center;
     align-items: center;
     padding: 5px;
     border-radius: 50%;
@@ -37,11 +45,8 @@ const { name, title } = defineProps({
 
 .icon {
     display: inline-block;
+    color: var(--text-default);
     width: 24px;
     height: 24px;
-    background-color: var(--text-default);
-    mask-size: contain;
-    mask-repeat: no-repeat;
-    mask-position: center;
 }
 </style>

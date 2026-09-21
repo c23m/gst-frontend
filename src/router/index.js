@@ -23,6 +23,10 @@ const routes = [
                     `/${to.params.lang ? to.params.lang + '/' : ''}home`,
             },
             {
+                path: 'register',
+                name: 'register',
+            },
+            {
                 path: 'article/:identifier?',
                 name: 'article',
                 component: Article,

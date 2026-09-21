@@ -1,37 +1,41 @@
-export async function request(url, options = {}) {
-    const response = await fetch(url, options)
-    if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+import axios from "axios"
+import { useLocalStorage } from "@vueuse/core"
+import router from "@/router"
+
+const token = useLocalStorage('token', '')
+
+const request = axios.create({
+    baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
+    timeout: 10000 //10s 超时
+})
+
+request.interceptors.request.use(config => {
+    if (token.value) {
+        config.headers.Authorization = `Bearer ${token.value}`
     }
-    return response.json();
-}
+    return config
+})
 
-export function get(url) {
-    return request(url)
-}
+request.interceptors.response.use(
+    response => response.data,
+    async err => {
+        const originalRequest = err.config
+        if (err.response?.status === 401) {
+            if (originalRequest._retry || originalRequest.url.includes('/auth/refresh')) {
+                token.value = ''
+                router.push('/login')
+            }
+            else {
+                const response = await request.post('/auth/refresh')
+                token.value = response.data.token
+                return request({
+                    _retry: true,
+                    ...originalRequest
+                })
+            }
+        }
+        return Promise.reject(err)
+    }
+)
 
-export function post(url, data) {
-    return request(url, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-    })
-}
-
-export function put(url, data) {
-    return request(url, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-    })
-}
-
-export function del(url) {
-    return request(url, {
-        method: "DELETE"
-    })
-}
+export default request
